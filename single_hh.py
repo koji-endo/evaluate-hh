@@ -3,10 +3,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import neuron
 
-def calc_hh(dt = 0.025, method='cnexp', show_plot=False):
+def calc_hh(dt = 25, method='cnexp', show_plot=False):
+    '''
+    dt = (int) [micro sec]
+    method = cnexp | impl | euler | runge
+    show_plot = True | False
+    '''
 
     filename_template = 'hh_%s_%04d.txt'
-    filename = filename_template % (method, int(dt*1000))
+    filename = filename_template % (method, dt)
 
     h = neuron.hoc.HocObject()
     h('nrn_load_dll("./mod/x86_64/.libs/libnrnmech.so")')
@@ -48,7 +53,7 @@ def calc_hh(dt = 0.025, method='cnexp', show_plot=False):
     
     neuron.h.finitialize(-65)
     tstop = 300
-    neuron.h.dt = float(dt)
+    neuron.h.dt = float(dt)/1000
     neuron.run(tstop)
     print "dt = %f" % neuron.h.dt
     
@@ -58,6 +63,9 @@ def calc_hh(dt = 0.025, method='cnexp', show_plot=False):
 
 
     f = open(filename, 'w')
+    f.write('# %s\n' % filename)
+    f.write('# dt = %d [usec]\n' % dt)
+    f.write('# t [usec], V [mV]\n')
     for i in range(len(time)):
         f.write("%d, %f\n" % (int(time[i]*1000), voltage[i]))
     f.close()
@@ -77,7 +85,7 @@ if __name__ == '__main__':
     argc = len(argvs)
 
     if argc == 3:
-        calc_hh(dt=float(argvs[1]), method=argvs[2])
+        calc_hh(dt=int(argvs[1]), method=argvs[2])
     else:
         print 'arg error.'
 
