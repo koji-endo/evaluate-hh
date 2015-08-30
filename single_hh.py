@@ -53,7 +53,8 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     
     neuron.h.finitialize(-65)
     tstop = 300
-    neuron.h.dt = float(dt)/1000
+    neuron.h.dt = float(dt)/1000.
+    neuron.h.secondorder = 2
     neuron.run(tstop)
     print "dt = %f" % neuron.h.dt
     
@@ -67,7 +68,8 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     f.write('# dt = %d [usec]\n' % dt)
     f.write('# t [usec], V [mV]\n')
     for i in range(len(time)):
-        f.write("%d, %f\n" % (int(time[i]*1000), voltage[i]))
+        checked_time = int((int(time[i]*1000)+1)/10) * 10
+        f.write("%d, %f\n" % (checked_time, voltage[i]))
     f.close()
 
 
