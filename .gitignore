@@ -1,5 +1,7 @@
 *~
 x86_64/
+result/
+images/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
