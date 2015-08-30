@@ -10,7 +10,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     show_plot = True | False
     '''
 
-    filename_template = 'hh_%s_%04d.txt'
+    filename_template = './result/hh_%s_%04d.txt'
     filename = filename_template % (method, dt)
 
     h = neuron.hoc.HocObject()
@@ -18,7 +18,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
 
     soma = neuron.h.Section(name="soma")
     
-    soma.nseg = 3    # odd number
+    soma.nseg = 1    # odd number
     soma.diam = 10   # [um]
     soma.L = 10      # [um]
     
@@ -42,7 +42,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     stim = neuron.h.IClamp(soma(0.5))
     stim.delay = 50  # [ms]
     stim.dur = 200   # [ms]
-    stim.amp = 0.15  # [nA]
+    stim.amp = 0.10  # [nA]
     
     
     rec_t = neuron.h.Vector()
@@ -54,7 +54,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     neuron.h.finitialize(-65)
     tstop = 300
     neuron.h.dt = float(dt)/1000.
-    neuron.h.secondorder = 2
+    #neuron.h.secondorder = 2
     neuron.run(tstop)
     print "dt = %f" % neuron.h.dt
     
@@ -68,7 +68,9 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     f.write('# dt = %d [usec]\n' % dt)
     f.write('# t [usec], V [mV]\n')
     for i in range(len(time)):
+        #checked_time = int((int(time[i]*10000)+1)/10) * 10
         checked_time = int((int(time[i]*1000)+1)/10) * 10
+        #checked_time = int(time[i]*1000)
         f.write("%d, %f\n" % (checked_time, voltage[i]))
     f.close()
 

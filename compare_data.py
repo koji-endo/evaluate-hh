@@ -7,7 +7,7 @@ class CompareData():
     
     FILETEMPLATE = './result/hh_%s_%04d.txt'
     MASTER_METHOD = 'runge'
-    MASTER_DT = 10
+    MASTER_DT = 1
     IMAGE_POS = './images/'
     
     def __init__(self, method='runge', dt=10, compare_method=1, draw_fig=False):
@@ -24,6 +24,7 @@ class CompareData():
         self.dt=dt
         self.draw_fig=draw_fig
         self.compare_method=compare_method
+        self.title_table = {'euler':'Euler Method', 'impl':'Backward Euler Method', 'runge':'Runge-Kutta 4th-Order Method', 'cnexp':'Exponential Integrator Method'}
 
     def _cutoff(self, val):
         return int((val+1) / 10) * 10
@@ -55,7 +56,7 @@ class CompareData():
             abs_sub.append(math.fabs(x))
 
         total_error = math.fsum(abs_sub)
-        print '%s (%d [usec]) - %s (%d [usec]) : %10.1f' % (self.method, self.dt, self.MASTER_METHOD, self.MASTER_DT, total_error)
+        print '%s (%5d [usec]) - %s (%5d [usec]) : %10.1f (%5d)' % (self.method, self.dt, self.MASTER_METHOD, self.MASTER_DT, total_error, target_pos)
         return total_error
         
 
@@ -66,13 +67,13 @@ class CompareData():
         master_voltage = self.master[:,1]
         
         
-        plt.plot(master_time, master_voltage, color='#aa3333', lw=2, label=self.MASTER_METHOD + (' (dt = %d)' % self.MASTER_DT) + r'[$\mathrm{\mu sec}$]')
-        plt.plot(target_time, target_voltage, color='k', linestyle='-', lw=1, label=self.method + (' (dt = %d)' % self.dt) + r'[$\mathrm{\mu sec}$]')
+        plt.plot(master_time, master_voltage, color='#aa3333', lw=3, label=self.title_table[self.MASTER_METHOD] + (' (dt = %d)' % self.MASTER_DT) + r'[$\mathrm{\mu sec}$]')
+        plt.plot(target_time, target_voltage, color='k', linestyle='-', lw=1, label=self.title_table[self.method] + (' (dt = %d)' % self.dt) + r'[$\mathrm{\mu sec}$]')
         plt.xticks(fontsize=self.fontsize*0.8)
         plt.yticks(fontsize=self.fontsize*0.8)
         plt.xlabel(r'$\mathrm{ Time [\mu sec]}$', fontsize=self.fontsize)
         plt.ylabel(r'$\mathrm{Membrane Potential [mV]}$', fontsize=self.fontsize)
-        plt.ylim([-90, 50])
+        plt.ylim([-90, 80])
         plt.xlim([0, 300000])
         plt.legend(fontsize=16)
         plt.grid(True)
@@ -86,7 +87,7 @@ class CompareData():
 
 def compare_all():
     compare_method = 1   # 1 or 2
-    draw_graph = False   # True or False
+    draw_graph = True   # True or False
     result_all = {
         'euler_title':'Euler Method',
         'impl_title':'Backward Euler Method',
@@ -117,8 +118,12 @@ def compare_all():
     plt.xlabel(r'$\mathrm{Discrete Time \ \ [\mu sec]}$', fontsize=fontsize)
     if compare_method == 1:
         plt.ylabel(r'$\int \ |T(t) - R(t) | dt \ \ \mathrm{[ mV \cdot \mu sec ]}$', fontsize=fontsize)
+        #plt.xlim([0, 200])
+        #plt.ylim([0, 1000000])
         plt.ylim([0, 6000000])
+        #plt.ylim([100000, 10000000])
         plt.legend(fontsize=fontsize*0.8, loc=4)
+        #plt.yscale('log')
     elif compare_method == 2:
         plt.ylabel(r'$\int_0^{t\mathrm{max}} \ \left| \int_0^a T(t) - R(t)  dt \right| da \ \ \mathrm{[ mV \cdot \mu sec ]}$', fontsize=fontsize)
         plt.ylim([0, 100000000])
@@ -126,6 +131,8 @@ def compare_all():
     else:
         print 'Wrong Compare Method'
         
+    plt.axvline(x=25, color='k', linestyle=':')
+    plt.axvline(x=50, color='k', linestyle=':')
     plt.xticks(fontsize=fontsize*0.8)
     plt.yticks(fontsize=fontsize*0.8)
     plt.grid(True)
@@ -140,7 +147,8 @@ if __name__ == '__main__':
     
     compare_all()
     '''
-    cmp = CompareData(method='cnexp', dt=10)
+    cmp = CompareData(method='euler', dt=100)
     cmp.compare_data()
     cmp.draw_graph()
     '''
+
