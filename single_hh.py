@@ -69,8 +69,10 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     f.write('# t [usec], V [mV]\n')
     for i in range(len(time)):
         #checked_time = int((int(time[i]*10000)+1)/10) * 10
-        checked_time = int((int(time[i]*1000)+1)/10) * 10
-        #checked_time = int(time[i]*1000)
+        if dt < 10:
+            checked_time = int(time[i]*1000)
+        else:
+            checked_time = int((int(time[i]*1000)+1)/10) * 10
         f.write("%d, %f\n" % (checked_time, voltage[i]))
     f.close()
 

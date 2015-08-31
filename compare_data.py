@@ -87,7 +87,7 @@ class CompareData():
 
 def compare_all():
     compare_method = 1   # 1 or 2
-    draw_graph = True   # True or False
+    draw_graph = False   # True or False
     result_all = {
         'euler_title':'Euler Method',
         'impl_title':'Backward Euler Method',
