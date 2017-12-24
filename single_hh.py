@@ -44,6 +44,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     stim.dur = 200   # [ms]
     stim.amp = 0.10  # [nA]
     
+    neuron.h.psection()
     
     rec_t = neuron.h.Vector()
     rec_t.record(neuron.h._ref_t)
