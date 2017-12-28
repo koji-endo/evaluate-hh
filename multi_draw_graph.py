@@ -12,7 +12,7 @@ targetfile2 = './multi_result/hh_2.txt'
 targetfile3 = './multi_result/hh_3.txt'
 targetfile4 = './multi_result/hh_4.txt'
 
-print targetfile
+# print(targetfile)
 data0 = np.loadtxt(targetfile0, delimiter=',', skiprows=3)
 data1 = np.loadtxt(targetfile1, delimiter=',', skiprows=3)
 data2 = np.loadtxt(targetfile2, delimiter=',', skiprows=3)
