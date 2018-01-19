@@ -3,12 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import neuron
 
+
 def calc_hh(dt = 25, method='cnexp', show_plot=False):
-    '''
+    """
     dt = (int) [micro sec]
     method = cnexp | impl | euler | runge
     show_plot = True | False
-    '''
+    """
 
     filename_template = './result/hh_%s_%04d.txt'
     filename = filename_template % (method, dt)
@@ -35,9 +36,8 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
         soma.insert("hh_runge")
         meca = soma(0.5).hh_runge
     else:
-        print 'wrong method.'
+        print('wrong method.')
         quit()
-
 
     stim = neuron.h.IClamp(soma(0.5))
     stim.delay = 50  # [ms]
@@ -55,21 +55,20 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     neuron.h.finitialize(-65)
     tstop = 300
     neuron.h.dt = float(dt)/1000.
-    #neuron.h.secondorder = 2
+    # neuron.h.secondorder = 2
     neuron.run(tstop)
-    print "dt = %f" % neuron.h.dt
-    
+    print("dt = %f" % neuron.h.dt)
+
     # convert neuron array to numpy array
     time = rec_t.as_numpy()
     voltage = rec_v.as_numpy()
-
 
     f = open(filename, 'w')
     f.write('# %s\n' % filename)
     f.write('# dt = %d [usec]\n' % dt)
     f.write('# t [usec], V [mV]\n')
     for i in range(len(time)):
-        #checked_time = int((int(time[i]*10000)+1)/10) * 10
+        # checked_time = int((int(time[i]*10000)+1)/10) * 10
         if dt < 10:
             checked_time = int(time[i]*1000)
         else:
@@ -77,9 +76,8 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
         f.write("%d, %f\n" % (checked_time, voltage[i]))
     f.close()
 
-
     # show graph by matplotlib
-    if show_plot == True:
+    if show_plot:
         plt.plot(time, voltage, color='b')
         plt.xlabel("Time [ms]")
         plt.ylabel("Voltage [mV]")
@@ -94,6 +92,4 @@ if __name__ == '__main__':
     if argc == 3:
         calc_hh(dt=int(argvs[1]), method=argvs[2])
     else:
-        print 'arg error.'
-
-    
+        print('arg error.')
