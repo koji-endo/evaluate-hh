@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import sys
 import math
 
+
 class CompareData():
     
     FILETEMPLATE = './result/hh_%s_%04d.txt'
@@ -56,7 +57,8 @@ class CompareData():
             abs_sub.append(math.fabs(x))
 
         total_error = math.fsum(abs_sub)
-        print '%s (%5d [usec]) - %s (%5d [usec]) : %10.1f (%5d)' % (self.method, self.dt, self.MASTER_METHOD, self.MASTER_DT, total_error, target_pos)
+        print('%s (%5d [usec]) - %s (%5d [usec]) : %10.1f (%5d)' % (
+        self.method, self.dt, self.MASTER_METHOD, self.MASTER_DT, total_error, target_pos))
         return total_error
         
 
@@ -83,8 +85,6 @@ class CompareData():
         plt.show()
 
 
-
-
 def compare_all():
     compare_method = 1   # 1 or 2
     draw_graph = False   # True or False
@@ -108,8 +108,7 @@ def compare_all():
     
         result_all[method+'_dt'] = result_dt
         result_all[method+'_error'] = result_error
-    
-    
+
     for method in ['euler', 'impl', 'runge', 'cnexp']:
         plt.plot(result_all[method+'_dt'], result_all[method+'_error'], label=result_all[method+'_title'], lw=2)
 
@@ -129,16 +128,14 @@ def compare_all():
         plt.ylim([0, 100000000])
         plt.legend(fontsize=fontsize*0.8, loc=1)
     else:
-        print 'Wrong Compare Method'
-        
+        print('Wrong Compare Method')
+
     plt.axvline(x=25, color='k', linestyle=':')
     plt.axvline(x=50, color='k', linestyle=':')
     plt.xticks(fontsize=fontsize*0.8)
     plt.yticks(fontsize=fontsize*0.8)
     plt.grid(True)
     plt.show()
-
-
 
 
 if __name__ == '__main__':
@@ -151,4 +148,3 @@ if __name__ == '__main__':
     cmp.compare_data()
     cmp.draw_graph()
     '''
-

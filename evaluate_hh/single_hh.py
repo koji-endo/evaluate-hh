@@ -63,18 +63,17 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     time = rec_t.as_numpy()
     voltage = rec_v.as_numpy()
 
-    f = open(filename, 'w')
-    f.write('# %s\n' % filename)
-    f.write('# dt = %d [usec]\n' % dt)
-    f.write('# t [usec], V [mV]\n')
-    for i in range(len(time)):
-        # checked_time = int((int(time[i]*10000)+1)/10) * 10
-        if dt < 10:
-            checked_time = int(time[i]*1000)
-        else:
-            checked_time = int((int(time[i]*1000)+1)/10) * 10
-        f.write("%d, %f\n" % (checked_time, voltage[i]))
-    f.close()
+    with open(filename, 'w') as f:
+        f.write('# %s\n' % filename)
+        f.write('# dt = %d [usec]\n' % dt)
+        f.write('# t [usec], V [mV]\n')
+        for i in range(len(time)):
+            # checked_time = int((int(time[i]*10000)+1)/10) * 10
+            if dt < 10:
+                checked_time = int(time[i]*1000)
+            else:
+                checked_time = int((int(time[i]*1000)+1)/10) * 10
+            f.write("%d, %f\n" % (checked_time, voltage[i]))
 
     # show graph by matplotlib
     if show_plot:
