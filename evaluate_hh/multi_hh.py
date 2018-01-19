@@ -12,7 +12,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
     """
 
     filename_template = './multi_result/hh_%d.txt'
-    filename = filename_template % (type)
+    filename = filename_template % type
 
     if type == 0:
         pos_list = [331, 553, 1087, 2222, 3838]
@@ -24,7 +24,6 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
         pos_list = [26, 42, 64, 201, 366]
     elif type == 4:
         pos_list = [10, 15, 23, 101, 184]
-
 
     h = neuron.hoc.HocObject()
     h.execute('type = '+str(type))
@@ -45,18 +44,16 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
             sec.insert("hh_runge")
             meca = sec(0.5).hh_runge
         else:
-            print 'wrong method.'
+            print('wrong method.')
             quit()
 
         sec.nseg = 1
-        #neuron.h.psection()
-
+        # neuron.h.psection()
 
     stim = neuron.h.IClamp(h.CellSwc[0].Dend[pos_list[0]](0.5))
     stim.delay = 50  # [ms]
     stim.dur = 200   # [ms]
     stim.amp = 0.10  # [nA]
-    
     
     rec_t = neuron.h.Vector()
     rec_t.record(neuron.h._ref_t)
@@ -73,9 +70,9 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
     neuron.h.finitialize(-65)
     tstop = 300
     neuron.h.dt = float(dt)/1000.
-    #neuron.h.secondorder = 2
+    # neuron.h.secondorder = 2
     neuron.run(tstop)
-    print "dt = %f" % neuron.h.dt
+    print("dt = %f" % neuron.h.dt)
     
     # convert neuron array to numpy array
     time = rec_t.as_numpy()
@@ -84,22 +81,19 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
     voltage3 = rec_v3.as_numpy()
     voltage4 = rec_v4.as_numpy()
 
-
-    f = open(filename, 'w')
-    f.write('# %s\n' % filename)
-    f.write('# dt = %d [usec]\n' % dt)
-    f.write('# t [usec], V [mV]\n')
-    for i in range(len(time)):
-        #checked_time = int((int(time[i]*10000)+1)/10) * 10
-        checked_time = int((int(time[i]*1000)+1)/10) * 10
-        #checked_time = int(time[i]*1000)
-        f.write("%d, %f, %f, %f, %f\n" % (checked_time, voltage1[i], voltage2[i], voltage3[i], voltage4[i]))
-    f.close()
-
+    with open(filename, 'w') as f:
+        f.write('# %s\n' % filename)
+        f.write('# dt = %d [usec]\n' % dt)
+        f.write('# t [usec], V [mV]\n')
+        for i in range(len(time)):
+            # checked_time = int((int(time[i]*10000)+1)/10) * 10
+            checked_time = int((int(time[i]*1000)+1)/10) * 10
+            # checked_time = int(time[i]*1000)
+            f.write("%d, %f, %f, %f, %f\n" % (checked_time, voltage1[i], voltage2[i], voltage3[i], voltage4[i]))
 
     # show graph by matplotlib
     if show_plot:
-        plt.plot(time, voltage, color='b')
+        plt.plot(time, voltage1, color='b')
         plt.xlabel("Time [ms]")
         plt.ylabel("Voltage [mV]")
         plt.axis(xmin=0, xmax=max(time), ymin=min(voltage)-5, ymax=max(voltage)+5)
@@ -112,5 +106,3 @@ if __name__ == '__main__':
 
     if argc == 2:
         calc_hh(type=int(argvs[1]))
-
-    
