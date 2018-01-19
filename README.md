@@ -1,2 +1,3 @@
-# evaluate_hh_method
-evaluate error of calculation method of Hodgkin-Huxley equation
+# evaluate-hh
+evaluate error of calculation method of Hodgkin-Huxley equations
+
