@@ -3,12 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import neuron
 
+
 def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
-    '''
+    """
     dt = (int) [micro sec]
     method = cnexp | impl | euler | runge
     show_plot = True | False
-    '''
+    """
 
     filename_template = './multi_result/hh_%d.txt'
     filename = filename_template % (type)
@@ -49,8 +50,6 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
 
         sec.nseg = 1
         #neuron.h.psection()
-    
-
 
 
     stim = neuron.h.IClamp(h.CellSwc[0].Dend[pos_list[0]](0.5))
@@ -99,7 +98,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False, type=0):
 
 
     # show graph by matplotlib
-    if show_plot == True:
+    if show_plot:
         plt.plot(time, voltage, color='b')
         plt.xlabel("Time [ms]")
         plt.ylabel("Voltage [mV]")
