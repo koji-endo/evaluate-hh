@@ -1,0 +1,37 @@
+NEURON -- VERSION 7.5 master (6b4c19f) 2017-09-25
+Duke, Yale, and the BlueBrain Project -- Copyright 1984-2016
+See http://neuron.yale.edu/neuron/credits
+
+loading membrane mechanisms from ../mod/x86_64/.libs/libnrnmech.so
+Additional mechanisms from files
+ hh_cnexp.mod hh_euler.mod hh_impl.mod hh_runge.mod izap.mod
+Traceback (most recent call last):
+  File "/home/endo/local/lib64/python2.6/site-packages/neuron/__init__.py", line 520, in vec2numpy
+    return numpy_from_pointer(data, size)
+  File "/home/endo/local/lib64/python2.6/site-packages/neuron/__init__.py", line 500, in numpy_from_pointer
+    if sys.version_info.major < 3:
+AttributeError: 'tuple' object has no attribute 'major'
+NEURON: Vector.as_numpy() error
+ near line 0
+ while (t < tstop) { fadvance() }
+                                 ^
+        Vector[0].as_numpy()
+	1 
+soma { nseg=1  L=10  Ra=35.4
+	/*location 0 attached to cell 0*/
+	/* First segment only */
+	insert morphology { diam=10}
+	insert capacitance { cm=1}
+	insert hh_euler { gnabar_hh_euler=0.12 gkbar_hh_euler=0.036 gl_hh_euler=0.0003 el_hh_euler=-54.3}
+	insert na_ion { ena=50}
+	insert k_ion { ek=-77}
+	insert IClamp { del=50 dur=200 amp=0.1}
+}
+dt = 0.010000
+oc_restore_code tobj_count=1 should be 0
+Traceback (most recent call last):
+  File "single_hh.py", line 94, in <module>
+    calc_hh(dt=int(argvs[1]), method=argvs[2])
+  File "single_hh.py", line 65, in calc_hh
+    time = rec_t.as_numpy()
+RuntimeError: hoc error

@@ -15,7 +15,9 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     filename = filename_template % (method, dt)
 
     h = neuron.hoc.HocObject()
-    h('nrn_load_dll("./mod/x86_64/.libs/libnrnmech.so")')
+    h('nrn_load_dll("../mod/x86_64/.libs/libnrnmech.so")')
+
+    # h('nrn_load_dll("./mod/x86_64/.libs/libnrnmech.so")')
 
     soma = neuron.h.Section(name="soma")
     
@@ -88,7 +90,8 @@ if __name__ == '__main__':
     argvs = sys.argv
     argc = len(argvs)
 
-    if argc == 3:
+    if 3 <= argc:
         calc_hh(dt=int(argvs[1]), method=argvs[2])
     else:
         print('arg error.')
+
