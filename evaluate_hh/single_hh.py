@@ -1,6 +1,7 @@
 import sys
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt 
+# we do not plan to use show plot 
 import neuron
 
 
@@ -62,6 +63,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     print("dt = %f" % neuron.h.dt)
 
     # convert neuron array to numpy array
+    rec_t.printf() # debug 07191
     time = rec_t.as_numpy()
     voltage = rec_v.as_numpy()
 
