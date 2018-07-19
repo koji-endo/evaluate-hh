@@ -1,6 +1,8 @@
 import sys
 import numpy as np
-#import matplotlib.pyplot as plt 
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt 
 # we do not plan to use show plot 
 import neuron
 
@@ -14,7 +16,9 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
 
     filename_template = './result/hh_%s_%04d.txt'
     filename = filename_template % (method, dt)
-
+    filename_template2 = './result/hh_%s_%04d.png'
+    filename2 = filename_template2 % (method, dt)
+    
     h = neuron.hoc.HocObject()
     h('nrn_load_dll("../mod/x86_64/.libs/libnrnmech.so")')
 
@@ -85,7 +89,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
         plt.xlabel("Time [ms]")
         plt.ylabel("Voltage [mV]")
         plt.axis(xmin=0, xmax=max(time), ymin=min(voltage)-5, ymax=max(voltage)+5)
-        plt.show()
+        plt.savefig(filename2)
 
 
 if __name__ == '__main__':
@@ -93,7 +97,7 @@ if __name__ == '__main__':
     argc = len(argvs)
 
     if 3 <= argc:
-        calc_hh(dt=int(argvs[1]), method=argvs[2])
+        calc_hh(dt=int(argvs[1]), method=argvs[2],show_plot=True)
     else:
         print('arg error.')
 
