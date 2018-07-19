@@ -63,7 +63,7 @@ def calc_hh(dt = 25, method='cnexp', show_plot=False):
     print("dt = %f" % neuron.h.dt)
 
     # convert neuron array to numpy array
-    rec_t.printf() # debug 07191
+    # rec_t.printf() # debug 07191
     time = rec_t.as_numpy()
     voltage = rec_v.as_numpy()
 
